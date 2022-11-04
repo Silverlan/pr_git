@@ -3,6 +3,7 @@
 #include <git2/clone.h>
 #include <git2/filter.h>
 #include <string>
+#include <cstring>
 #include <vector>
 #include <memory>
 #include <sharedutils/scope_guard.h>
@@ -75,7 +76,11 @@ extern "C"
 					auto &path = m_paths[i];
 					auto sz = path.length() +1;
 					m_data[i] = new char[sz];
+#ifdef _WIN32
 					strcpy_s(m_data[i],sz,path.data());
+#else
+					strcpy(m_data[i],path.data());
+#endif
 				}
 				return m_data.data();
 			}

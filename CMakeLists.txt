@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-include("../CMakeShared.txt")
+include("./CMakeShared.txt")
 
 set(PROJ_NAME pr_git)
 
@@ -26,7 +26,9 @@ set_target_properties(git2 PROPERTIES FOLDER third_party/libgit2)
 set_target_properties(git2internal PROPERTIES FOLDER third_party/libgit2)
 set_target_properties(http-parser PROPERTIES FOLDER third_party/libgit2)
 set_target_properties(libgit2_clar PROPERTIES FOLDER third_party/libgit2)
-set_target_properties(pcre PROPERTIES FOLDER third_party/libgit2)
+if(WIN32)
+	set_target_properties(pcre PROPERTIES FOLDER third_party/libgit2)
+endif()
 
 register_pragma_module(${PROJ_NAME})
 
