@@ -8,6 +8,14 @@ project(${PROJ_NAME} CXX)
 
 # set(PRECOMPILED_HEADER "stdafx")
 
+set(DEPENDENCY_LIBGIT2_INCLUDE ${CMAKE_CURRENT_LIST_DIR}/third_party/libgit2/include/ CACHE PATH "Path to include directory." FORCE)
+
+if(WIN32)
+    search_lib_recursive(DEPENDENCY_LIBGIT2_LIBRARY third_party/libgit2/${BINARY_PRAGMA_DIR} git2)
+else()
+    search_lib_recursive(DEPENDENCY_LIBGIT2_LIBRARY third_party/libgit2/${BINARY_PRAGMA_DIR} git2)
+endif()
+
 link_external_library(vfilesystem)
 link_external_library(sharedutils)
 link_external_library(mathutil)
