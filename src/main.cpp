@@ -41,7 +41,11 @@ static git_commit *get_last_commit(git_repository *repo)
 	return nullptr;
 }
 
-static std::optional<std::vector<std::string>> get_remote_tags(const std::string &repositoryUrl, std::string &outErr)
+struct TagInfo {
+	std::string tagName;
+	std::string commitSha;
+};
+static std::optional<std::vector<TagInfo>> get_remote_tags(const std::string &repositoryUrl, std::string &outErr)
 {
 	auto err = git_libgit2_init();
 	if(check_error(err, outErr) == false)
@@ -78,11 +82,13 @@ static std::optional<std::vector<std::string>> get_remote_tags(const std::string
 		return {};
 
 	// Iterate through the references and collect the tags
-	std::vector<std::string> tagNames;
+	std::vector<TagInfo> tagNames;
 	for(size_t i = 0; i < refs_len; ++i) {
 		std::string ref_name(refs[i]->name);
 		if(ref_name.find("refs/tags/") == 0) {
-			tagNames.push_back(ref_name.substr(10));
+			char commitSha[GIT_OID_HEXSZ + 1];
+			auto *ptr = git_oid_tostr(commitSha, sizeof(commitSha), &refs[i]->oid);
+			tagNames.push_back({ref_name.substr(10), ptr ? std::string {commitSha} : std::string {}});
 		}
 	}
 
@@ -94,12 +100,19 @@ void PRAGMA_EXPORT pragma_initialize_lua(Lua::Interface &l)
 {
 	auto &modGit = l.RegisterLibrary("git");
 	modGit[luabind::def(
-	  "get_remote_tags", +[](lua_State *l, const std::string &url) -> Lua::var<Lua::mult<bool, std::string>, std::vector<std::string>> {
+	  "get_remote_tags", +[](lua_State *l, const std::string &url) -> Lua::var<Lua::mult<bool, std::string>, Lua::map<std::string, std::string>> {
 		  std::string err;
 		  auto tags = get_remote_tags(url, err);
 		  if(!tags)
 			  return luabind::object {l, std::make_pair(false, err)};
-		  return luabind::object {l, *tags};
+		  auto t = luabind::newtable(l);
+		  for(auto i = decltype(tags->size()) {0}; i < tags->size(); ++i) {
+			  auto &tag = tags->at(i);
+			  t[i + 1] = luabind::newtable(l);
+			  t[i + 1]["tagName"] = tag.tagName;
+			  t[i + 1]["sha"] = tag.commitSha;
+		  }
+		  return t;
 	  })];
 }
 };
