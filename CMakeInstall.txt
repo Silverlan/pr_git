@@ -1,3 +1,3 @@
 pragma_install_create_directory(modules/git)
-pragma_install_lib("${CMAKE_CURRENT_BINARY_DIR}/modules/pr_git/${CONFIG_BUILD_TYPE}/pr_git${OS_LIB_BIN_EXT}" "modules/git/" OPTIONAL)
-pragma_install_lib("${CMAKE_CURRENT_BINARY_DIR}/modules/pr_git/third_party/libgit2/${CONFIG_BUILD_TYPE}/git2${OS_LIB_BIN_EXT}" "modules/git/" OPTIONAL)
+pragma_install_lib("${CMAKE_CURRENT_BINARY_DIR}/modules/pr_git//${PR_MODULE_INSTALL_SUBDIR}/${OS_LIB_BIN_PRE}pr_git${OS_LIB_BIN_EXT}" "modules/git/" OPTIONAL)
+pragma_install_lib("${CMAKE_CURRENT_BINARY_DIR}/modules/pr_git/third_party/libgit2//${PR_MODULE_INSTALL_SUBDIR}/${OS_LIB_BIN_PRE}git2${OS_LIB_BIN_EXT}" "modules/git/" OPTIONAL)
