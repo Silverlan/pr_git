@@ -149,7 +149,7 @@ bool PRAGMA_EXPORT pr_git_clone(const std::string &repositoryUrl, const std::str
 #ifdef _WIN32
 				strcpy_s(m_data[i], sz, path.data());
 #else
-				strcpy(m_data[i], path.data());
+                strncpy(m_data[i], path.data(),sz);
 #endif
 			}
 			return m_data.data();

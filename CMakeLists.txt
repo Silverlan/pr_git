@@ -28,7 +28,7 @@ endif()
 add_include_dir(glm)
 
 link_generic_module_libraries()
-
+set(USE_SSH OFF CACHE BOOL "Git SSH" FORCE)
 add_subdirectory(third_party/libgit2)
 set_target_properties(git2 PROPERTIES FOLDER third_party/libgit2)
 set_target_properties(git2internal PROPERTIES FOLDER third_party/libgit2)
