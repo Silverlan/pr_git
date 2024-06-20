@@ -1,0 +1,6 @@
+{
+    "name": "Git",
+    "module_name": "pr_git",
+    "install_directory": "modules/git/",
+    "release_directory": "modules/git/"
+}
