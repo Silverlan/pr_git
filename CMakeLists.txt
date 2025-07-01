@@ -10,6 +10,7 @@ pr_add_sources(${PROJ_NAME} "src/")
 
 set(USE_SSH OFF CACHE BOOL "Link with libssh2 to enable SSH support" FORCE)
 set(BUILD_CLAR OFF CACHE BOOL "Git SSH" FORCE)
+find_package(zlib REQUIRED)
 add_subdirectory(third_party/libgit2)
 set_target_properties(git2 PROPERTIES FOLDER third_party/libgit2)
 set_target_properties(git2internal PROPERTIES FOLDER third_party/libgit2)
