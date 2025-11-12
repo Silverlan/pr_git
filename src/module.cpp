@@ -1,20 +1,12 @@
 // SPDX-FileCopyrightText: (c) 2021 Silverlan <opensource@pragma-engine.com>
 // SPDX-License-Identifier: MIT
 
-#include <pragma/pragma_module.hpp>
 #include <git2.h>
 #include <git2/clone.h>
 #include <git2/filter.h>
-#include <string>
-#include <cstring>
-#include <vector>
-#include <memory>
-#include <optional>
-#include <sharedutils/scope_guard.h>
-#include <pragma/lua/luaapi.h>
-#include <pragma/lua/converters/pair_converter_t.hpp>
-#include <pragma/lua/converters/vector_converter_t.hpp>
-#include <luainterface.hpp>
+
+import pragma.shared;
+
 static bool check_error(int err, std::string &outErr)
 {
 	if(err >= 0)
@@ -99,11 +91,11 @@ static std::optional<std::vector<TagInfo>> get_remote_tags(const std::string &re
 }
 
 extern "C" {
-void PRAGMA_EXPORT pragma_initialize_lua(Lua::Interface &l)
+void PR_EXPORT pragma_initialize_lua(Lua::Interface &l)
 {
 	auto &modGit = l.RegisterLibrary("git");
 	modGit[luabind::def(
-	  "get_remote_tags", +[](lua_State *l, const std::string &url) -> Lua::var<Lua::mult<bool, std::string>, Lua::map<std::string, std::string>> {
+	  "get_remote_tags", +[](lua::State *l, const std::string &url) -> Lua::var<Lua::mult<bool, std::string>, Lua::map<std::string, std::string>> {
 		  std::string err;
 		  auto tags = get_remote_tags(url, err);
 		  if(!tags)
@@ -121,7 +113,7 @@ void PRAGMA_EXPORT pragma_initialize_lua(Lua::Interface &l)
 };
 
 extern "C" {
-bool PRAGMA_EXPORT pr_git_clone(const std::string &repositoryUrl, const std::string &branch, const std::vector<std::string> &filter, const std::string &outputDir, std::string &outErr, std::string *optOutCommitId)
+bool PR_EXPORT pr_git_clone(const std::string &repositoryUrl, const std::string &branch, const std::vector<std::string> &filter, const std::string &outputDir, std::string &outErr, std::string *optOutCommitId)
 {
 	auto err = git_libgit2_init();
 	if(check_error(err, outErr) == false)
