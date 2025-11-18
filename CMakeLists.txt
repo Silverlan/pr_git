@@ -5,8 +5,7 @@ pr_add_module(${PROJ_NAME} SHARED "modules/git/")
 
 pr_add_dependency(${PROJ_NAME} ishared TARGET PUBLIC)
 
-pr_add_headers(${PROJ_NAME} "include/")
-pr_add_sources(${PROJ_NAME} "src/")
+pr_init_module(${PROJ_NAME})
 
 set(USE_SSH OFF CACHE BOOL "Link with libssh2 to enable SSH support" FORCE)
 set(BUILD_CLAR OFF CACHE BOOL "Git SSH" FORCE)
