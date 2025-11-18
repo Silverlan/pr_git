@@ -144,7 +144,7 @@ bool PR_EXPORT pr_git_clone(const std::string &repositoryUrl, const std::string 
 #ifdef _WIN32
 				strcpy_s(m_data[i], sz, path.data());
 #else
-                strncpy(m_data[i], path.data(),sz);
+				strncpy(m_data[i], path.data(), sz);
 #endif
 			}
 			return m_data.data();
