@@ -47,7 +47,7 @@ static std::optional<std::vector<TagInfo>> get_remote_tags(const std::string &re
 		return {};
 	git_repository *repo = nullptr;
 	git_remote *remote = nullptr;
-	util::ScopeGuard sgLibgit2 {[&repo, &remote]() {
+	pragma::util::ScopeGuard sgLibgit2 {[&repo, &remote]() {
 		if(remote)
 			git_remote_free(remote);
 		if(repo)
@@ -118,7 +118,7 @@ bool PR_EXPORT pr_git_clone(const std::string &repositoryUrl, const std::string 
 	auto err = git_libgit2_init();
 	if(check_error(err, outErr) == false)
 		return false;
-	util::ScopeGuard sgLibgit2 {[]() { git_libgit2_shutdown(); }};
+	pragma::util::ScopeGuard sgLibgit2 {[]() { git_libgit2_shutdown(); }};
 	auto &url = repositoryUrl;
 
 	git_clone_options options {};
