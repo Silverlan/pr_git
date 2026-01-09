@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: (c) 2021 Silverlan <opensource@pragma-engine.com>
 // SPDX-License-Identifier: MIT
 
+#include <cstring>
 #include <git2.h>
 #include <git2/clone.h>
 #include <git2/filter.h>
